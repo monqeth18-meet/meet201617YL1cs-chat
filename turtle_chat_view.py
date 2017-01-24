@@ -28,10 +28,20 @@ class TextBox(TextInput):
 #methods.  There are two:
 #
 #draw_box
-    def draw_box():
-        pass
+    def draw_box(self):
+        self.writer.penup() 
+        self.writer.goto(pos)
+        self.writer.pendown()
+        self.writer.goto(0,height)
+        self.writer.goto(width,height)
+        self.writer.goto(width,0)
+        self.writer.goto(pos)
+        self.writer.mainloop()
+        
 #write_msg
-#
+    def write_msg(self):
+        self.setup_listeners()
+        print(self.new_msg)
 #Hints:
 #1. in draw_box, you will draw (or stamp) the space on which the user's input
 #will appear.

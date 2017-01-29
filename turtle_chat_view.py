@@ -29,15 +29,17 @@ class TextBox(TextInput):
 #
 #draw_box
     def draw_box(self):
-        self.writer.penup() 
-        self.writer.goto(pos)
-        self.writer.pendown()
-        self.writer.goto(0,height)
-        self.writer.goto(width,height)
-        self.writer.goto(width,0)
-        self.writer.goto(pos)
-        self.writer.mainloop()
-        
+        turtle.penup() 
+        turtle.goto(self.pos)
+        turtle.pendown()
+        turtle.goto(0,self.height)
+        turtle.goto(self.width,self.height)
+        turtle.goto(self.width,0)
+        turtle.goto(self.pos)
+        turtle.mainloop()
+
+
+        DB = TextBox()
 #write_msg
     def write_msg(self):
         self.setup_listeners()
@@ -64,7 +66,12 @@ class TextBox(TextInput):
 #                                  SendButton                                       #
 #####################################################################################
 #Make a class called SendButton, which will be a subclass of Button.
-#Button is an abstract class with one abstract method: fun.
+class SendButton(Button):
+    
+    def fun(self):
+        pass
+        
+    #Button is an abstract class with one abstract method: fun.
 #fun gets called whenever the button is clicked.  It's jobs will be to
 #
 # 1. send a message to the other chat participant - to do this,

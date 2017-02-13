@@ -11,7 +11,6 @@ class TextBox(TextInput):
     
 
     def draw_box(self):
-        
         turtle.clear()
         turtle.penup() 
         turtle.goto(self.pos)
@@ -21,7 +20,6 @@ class TextBox(TextInput):
         turtle.goto(self.width,0)
         turtle.goto(self.pos)
         turtle.mainloop()
-
         
     def write_msg(self):
         self.setup_listeners()
@@ -31,7 +29,6 @@ class TextBox(TextInput):
         self.writer.write(self.new_msg)
     
 DB = TextBox()
-
 
 class SendButton(Button):
     def __init__(self,my_turtle=None,shape=None,pos=(0,0) ,view=None):
@@ -44,14 +41,30 @@ class View:
     _MSG_LOG_LENGTH = 5
     _SCREEN_WIDTH = 300
     _SCREEN_HEIGHT = 600
-    _LINE_SPACING = round(_SCREEN_HEIGHT/2/(_MSG_LOG_LENGYH+1))
+    _LINE_SPACING = round(_SCREEN_HEIGHT/2/(_MSG_LOG_LENGTH+1))
 
     def __init__(self, username = 'Me', partner_name='Partner'):
         self.username = username
         self.partner_name = partner_name
 
-        my_client = Client()
+        self.my_client = Client()
 
         turtle.setup(View._SCREEN_WIDTH , View._SCREEN_HEIGHT)
-        
+
+        self.msg_queue=[]
+
+        self.view_t = turtle.clone()
+        self.tb = TextBox()
+        self.sb = SendButton()
+
+        self.setup_listeners()
+
+    def send_msg(self):
+        Client.send(self.my_client,self.tb.new_msg)
+        self.msg_queue.append(self.tb.new_msg)
+        self.tb.clear_msg()
+        self.display_msg()
+
+    def get_msg(self):
+        return self.textbox.get_msg()
     

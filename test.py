@@ -1,15 +1,11 @@
 import turtle
 
-
 from turtle_chat_client import Client
-
 
 from turtle_chat_widgets import Button , TextInput
 
-
 class TextBox(TextInput):
     
-
     def draw_box(self):
         turtle.clear()
         turtle.penup() 
@@ -27,7 +23,20 @@ class TextBox(TextInput):
         print(self.new_msg)
         self.writer.goto(10,self.height - 15)
         self.writer.write(self.new_msg)
-    
+
+        length = 5
+        if len(self.new_msg) >= length:
+            turtle.penup()
+            turtle.goto(10 , self.height - 30)
+            old_msg = self.new_msg[0:length] + '\r' + self.new_msg[length:]
+            
+            self.writer.goto(10 , self.height - 30)
+            self.writer.write(self.new_msg[length:])
+
+        else:
+            self.writer.clear()
+            self.writer.write(self.new_msg)
+                    
 DB = TextBox()
 
 class SendButton(Button):
@@ -67,4 +76,33 @@ class View:
 
     def get_msg(self):
         return self.textbox.get_msg()
-    
+
+    def setup_listeners(self):
+        self.send_btn.fun = SendButton()
+        turtle.onkeypress(send_btn.fun)
+        
+        
+    def msg_received(self , msg):
+        print(msg)
+        show_this_msg = self.partner_name + ' says:\r' + msg
+        self.msg_queue.append(msg)
+        self.display_msg(self)
+
+    def display_msg(self):
+        pass
+
+
+if __name__ == '__main__':
+    my_view=View()
+    _WAIT_TIME=200 #Time between check for new message, ms
+    def check() :
+        msg_in=my_view.my_client.receive()
+        if not(msg_in is None):
+            if msg_in==my_view.my_client._END_MSG:
+                print('End message received')
+                sys.exit()
+            else:
+                my_view.msg_received(msg_in)
+        turtle.ontimer(check,_WAIT_TIME) #Check recursively
+    check()
+    turtle.mainloop()

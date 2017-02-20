@@ -24,7 +24,11 @@ class TextBox(TextInput):
         self.writer.goto(10,self.height - 15)
         self.writer.write(self.new_msg)
 
-        length = 5
+        length = 19
+
+
+
+        
         if len(self.new_msg) >= length:
             turtle.penup()
             turtle.goto(10 , self.height - 30)
@@ -37,7 +41,7 @@ class TextBox(TextInput):
             self.writer.clear()
             self.writer.write(self.new_msg)
                     
-DB = TextBox()
+#DB = TextBox()
 
 class SendButton(Button):
     def __init__(self,my_turtle=None,shape=None,pos=(0,0) ,view=None):
@@ -78,9 +82,9 @@ class View:
         return self.textbox.get_msg()
 
     def setup_listeners(self):
-        self.send_btn.fun = SendButton()
-        turtle.onkeypress(send_btn.fun)
-        
+        #self.send_btn.fun = SendButton()
+        #turtle.onkeypress(send_btn.fun)
+        pass
         
     def msg_received(self , msg):
         print(msg)
@@ -89,7 +93,9 @@ class View:
         self.display_msg(self)
 
     def display_msg(self):
-        pass
+        self.view_t.goto(0,self.height + 100)
+        self.view_t.clear()
+        self.view_t.write(self.msg_queue[-1])
 
 
 if __name__ == '__main__':

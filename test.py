@@ -15,7 +15,6 @@ class TextBox(TextInput):
         turtle.goto(self.width,self.height)
         turtle.goto(self.width,0)
         turtle.goto(self.pos)
-        turtle.mainloop()
         
     def write_msg(self):
         self.setup_listeners()
@@ -23,7 +22,7 @@ class TextBox(TextInput):
         print(self.new_msg)
         self.writer.goto(10,self.height - 15)
         self.writer.write(self.new_msg)
-
+'''
         length = 19
 
 
@@ -42,9 +41,10 @@ class TextBox(TextInput):
             self.writer.write(self.new_msg)
                     
 #DB = TextBox()
-
+'''
 class SendButton(Button):
     def __init__(self,my_turtle=None,shape=None,pos=(0,0) ,view=None):
+        
         super(SendButton,self).__init__(my_turtle=None, shape=None, pos=(0,0))
         self.view=view
     def fun(self, x=None, y=None):
@@ -59,18 +59,21 @@ class View:
     def __init__(self, username = 'Me', partner_name='Partner'):
         self.username = username
         self.partner_name = partner_name
-
+        print('1')
         self.my_client = Client()
-
+        print('2')
         turtle.setup(View._SCREEN_WIDTH , View._SCREEN_HEIGHT)
-
+        print('3')
         self.msg_queue=[]
-
+        print('4')
         self.view_t = turtle.clone()
+        print('5')
         self.tb = TextBox()
-        self.sb = SendButton()
-
+        print('6')
+        self.sb = SendButton(view = self)
+        print('7')
         self.setup_listeners()
+        print('hi world')
 
     def send_msg(self):
         Client.send(self.my_client,self.tb.new_msg)
@@ -90,15 +93,16 @@ class View:
         print(msg)
         show_this_msg = self.partner_name + ' says:\r' + msg
         self.msg_queue.append(msg)
-        self.display_msg(self)
+        self.display_msg()
 
     def display_msg(self):
-        self.view_t.goto(0,self.height + 100)
+        self.view_t.goto(0, 100)
         self.view_t.clear()
         self.view_t.write(self.msg_queue[-1])
 
 
 if __name__ == '__main__':
+    print('helloworld')
     my_view=View()
     _WAIT_TIME=200 #Time between check for new message, ms
     def check() :

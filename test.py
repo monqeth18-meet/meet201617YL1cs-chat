@@ -4,48 +4,49 @@ from turtle_chat_client import Client
 
 from turtle_chat_widgets import Button , TextInput
 
+zft =turtle.Screen()
+zft.bgpic('monqeth.gif')
+
 class TextBox(TextInput):
     
     def draw_box(self):
         turtle.clear()
+        self.pos = (-100,0)
+        turtle.pensize(5)
         turtle.penup() 
         turtle.goto(self.pos)
         turtle.pendown()
-        turtle.goto(0,self.height)
-        turtle.goto(self.width,self.height)
-        turtle.goto(self.width,0)
+        turtle.goto(-100,self.height)
+        turtle.goto(self.width-100,self.height)
+        turtle.goto(self.width-100,0)
         turtle.goto(self.pos)
         
     def write_msg(self):
         self.setup_listeners()
         self.writer.clear()
         print(self.new_msg)
-        self.writer.goto(10,self.height - 15)
-        self.writer.write(self.new_msg)
+        self.writer.goto(-90,self.height - 30)
+        self.writer.write(self.new_msg,font=('Ariel',10,'normal'))
 '''
-        length = 19
+        length = 3
 
-
-
-        
         if len(self.new_msg) >= length:
             turtle.penup()
-            turtle.goto(10 , self.height - 30)
+            turtle.goto(-90 , self.height - 60)
             old_msg = self.new_msg[0:length] + '\r' + self.new_msg[length:]
             
             self.writer.goto(10 , self.height - 30)
-            self.writer.write(self.new_msg[length:])
+            self.writer.write(self.new_msg[length:],font=('Ariel',15,'normal'))
 
         else:
             self.writer.clear()
-            self.writer.write(self.new_msg)
-                    
-#DB = TextBox()
+            self.writer.write(self.new_msg,font=('Ariel',15,'normal'))
 '''
+
 class SendButton(Button):
-    def __init__(self,my_turtle=None,shape=None,pos=(0,0) ,view=None):
+    def __init__(self,my_turtle=None,shape=None,pos=(0,-50) ,view=None):
         
-        super(SendButton,self).__init__(my_turtle=None, shape=None, pos=(0,0))
+        super(SendButton,self).__init__(my_turtle=None, shape=None, pos=(0,-50))
         self.view=view
     def fun(self, x=None, y=None):
         self.view.send_msg()
@@ -59,21 +60,13 @@ class View:
     def __init__(self, username = 'Me', partner_name='Partner'):
         self.username = username
         self.partner_name = partner_name
-        print('1')
         self.my_client = Client()
-        print('2')
         turtle.setup(View._SCREEN_WIDTH , View._SCREEN_HEIGHT)
-        print('3')
         self.msg_queue=[]
-        print('4')
         self.view_t = turtle.clone()
-        print('5')
         self.tb = TextBox()
-        print('6')
         self.sb = SendButton(view = self)
-        print('7')
         self.setup_listeners()
-        print('hi world')
 
     def send_msg(self):
         Client.send(self.my_client,self.tb.new_msg)
@@ -85,8 +78,6 @@ class View:
         return self.textbox.get_msg()
 
     def setup_listeners(self):
-        #self.send_btn.fun = SendButton()
-        #turtle.onkeypress(send_btn.fun)
         pass
         
     def msg_received(self , msg):
@@ -96,15 +87,19 @@ class View:
         self.display_msg()
 
     def display_msg(self):
-        self.view_t.goto(0, 100)
+        self.view_t.pensize(10)
+        self.view_t.color('white')
+        self.view_t.penup()
+        self.view_t.hideturtle()
+        self.view_t.goto(-90, 115)
         self.view_t.clear()
-        self.view_t.write(self.msg_queue[-1])
+        self.view_t.write(self.msg_queue[-1],font=('Noto Sans Mono CJK JP Bold',10,'normal'))
 
 
 if __name__ == '__main__':
     print('helloworld')
     my_view=View()
-    _WAIT_TIME=200 #Time between check for new message, ms
+    _WAIT_TIME=200 
     def check() :
         msg_in=my_view.my_client.receive()
         if not(msg_in is None):
@@ -113,6 +108,6 @@ if __name__ == '__main__':
                 sys.exit()
             else:
                 my_view.msg_received(msg_in)
-        turtle.ontimer(check,_WAIT_TIME) #Check recursively
+        turtle.ontimer(check,_WAIT_TIME) 
     check()
     turtle.mainloop()
